@@ -1,26 +1,36 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
+import EmptyState from "./components/EmptyState";
 
 interface Module2Props {
   onBack: () => void;
+  toast: {
+    success: (message: string) => void;
+    error: (message: string) => void;
+    warning: (message: string) => void;
+    info: (message: string) => void;
+  };
 }
 
-function Module2({ onBack }: Module2Props) {
+type OperationType = "interpret" | "email" | "update" | null;
+
+function Module2({ onBack, toast }: Module2Props) {
   const { t, i18n } = useTranslation();
-  const [text, setText] = useState("");
-  const [result, setResult] = useState("");
+  const [inputText, setInputText] = useState("");
+  const [analysisResult, setAnalysisResult] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [currentOperation, setCurrentOperation] = useState<OperationType>(null);
 
   const handleInterpret = async () => {
-    if (!text.trim()) {
-      alert(t("module2.errors.emptyText"));
+    if (!inputText.trim()) {
+      toast.error(t("module2.errors.emptyText"));
       return;
     }
 
     setIsProcessing(true);
-    setResult("");
+    setCurrentOperation("interpret");
+    setAnalysisResult("");
 
     try {
       const response = await fetch("http://localhost:5001/api/interpret-text", {
@@ -29,42 +39,50 @@ function Module2({ onBack }: Module2Props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          text: text,
+          text: inputText,
           language: i18n.language,
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to interpret text: ${response.status}`);
+        if (response.status >= 500) {
+          toast.error(t("module2.errors.apiError"));
+        } else {
+          toast.error(t("module2.errors.interpretError"));
+        }
+        return;
       }
 
       const data = await response.json();
 
       if (data.success) {
-        setResult(data.interpretation);
+        setAnalysisResult(data.interpretation);
+        toast.success(t("module2.success.interpretComplete"));
       } else {
-        throw new Error(data.error || "Interpretation failed");
+        toast.error(data.error || t("module2.errors.interpretError"));
       }
     } catch (error) {
       console.error("Error interpreting text:", error);
-      alert(
-        t("module2.errors.analysisFailed") +
-          " " +
-          (error instanceof Error ? error.message : String(error)),
-      );
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        toast.error(t("module2.errors.networkError"));
+      } else {
+        toast.error(t("module2.errors.interpretError"));
+      }
     } finally {
       setIsProcessing(false);
+      setCurrentOperation(null);
     }
   };
 
   const handleConvert = async (type: "email" | "update") => {
-    if (!text.trim()) {
-      alert(t("module2.errors.emptyText"));
+    if (!inputText.trim()) {
+      toast.error(t("module2.errors.emptyText"));
       return;
     }
 
     setIsProcessing(true);
-    setResult("");
+    setCurrentOperation(type);
+    setAnalysisResult("");
 
     try {
       const response = await fetch("http://localhost:5001/api/convert-text", {
@@ -73,48 +91,55 @@ function Module2({ onBack }: Module2Props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          text: text,
+          text: inputText,
           type: type,
           language: i18n.language,
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to convert text: ${response.status}`);
+        if (response.status >= 500) {
+          toast.error(t("module2.errors.apiError"));
+        } else {
+          toast.error(t("module2.errors.convertError"));
+        }
+        return;
       }
 
       const data = await response.json();
 
       if (data.success) {
-        setResult(data.converted);
+        setAnalysisResult(data.converted);
+        toast.success(t("module2.success.convertComplete"));
       } else {
-        throw new Error(data.error || "Conversion failed");
+        toast.error(data.error || t("module2.errors.convertError"));
       }
     } catch (error) {
       console.error("Error converting text:", error);
-      alert(
-        t("module2.errors.analysisFailed") +
-          " " +
-          (error instanceof Error ? error.message : String(error)),
-      );
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        toast.error(t("module2.errors.networkError"));
+      } else {
+        toast.error(t("module2.errors.convertError"));
+      }
     } finally {
       setIsProcessing(false);
+      setCurrentOperation(null);
     }
   };
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(result);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(analysisResult);
+      toast.success(t("module2.success.textCopied"));
     } catch (error) {
       console.error("Failed to copy:", error);
+      toast.error("Failed to copy to clipboard");
     }
   };
 
   const handleClear = () => {
-    setText("");
-    setResult("");
+    setInputText("");
+    setAnalysisResult("");
   };
 
   return (
@@ -141,8 +166,8 @@ function Module2({ onBack }: Module2Props) {
             <textarea
               className="text-input"
               placeholder={t("module2.inputPlaceholder")}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
               disabled={isProcessing}
             />
           </div>
@@ -166,9 +191,12 @@ function Module2({ onBack }: Module2Props) {
               <button
                 className="btn-primary"
                 onClick={handleInterpret}
-                disabled={isProcessing || !text.trim()}
+                disabled={isProcessing || !inputText.trim()}
+                title={
+                  !inputText.trim() ? t("module2.errors.emptyText") : undefined
+                }
               >
-                {isProcessing ? (
+                {isProcessing && currentOperation === "interpret" ? (
                   <>
                     <div className="spinner"></div>
                     {t("module2.interpret.analyzing")}
@@ -207,9 +235,14 @@ function Module2({ onBack }: Module2Props) {
                 <button
                   className="btn-secondary"
                   onClick={() => handleConvert("email")}
-                  disabled={isProcessing || !text.trim()}
+                  disabled={isProcessing || !inputText.trim()}
+                  title={
+                    !inputText.trim()
+                      ? t("module2.errors.emptyText")
+                      : undefined
+                  }
                 >
-                  {isProcessing ? (
+                  {isProcessing && currentOperation === "email" ? (
                     <>
                       <div className="spinner"></div>
                       {t("module2.convert.converting")}
@@ -221,9 +254,14 @@ function Module2({ onBack }: Module2Props) {
                 <button
                   className="btn-secondary"
                   onClick={() => handleConvert("update")}
-                  disabled={isProcessing || !text.trim()}
+                  disabled={isProcessing || !inputText.trim()}
+                  title={
+                    !inputText.trim()
+                      ? t("module2.errors.emptyText")
+                      : undefined
+                  }
                 >
-                  {isProcessing ? (
+                  {isProcessing && currentOperation === "update" ? (
                     <>
                       <div className="spinner"></div>
                       {t("module2.convert.converting")}
@@ -237,53 +275,31 @@ function Module2({ onBack }: Module2Props) {
           </div>
         </div>
 
-        {result && (
+        {!inputText.trim() && !analysisResult && <EmptyState />}
+
+        {analysisResult && (
           <div className="result-section">
             <div className="result-card">
               <div className="result-header">
                 <h3>{t("module2.result.title")}</h3>
                 <div className="result-actions">
                   <button className="btn-icon" onClick={handleCopy}>
-                    {copied ? (
-                      <>
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                        >
-                          <path
-                            d="M20 6L9 17l-5-5"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        {t("module2.result.copied")}
-                      </>
-                    ) : (
-                      <>
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                        >
-                          <rect
-                            x="9"
-                            y="9"
-                            width="13"
-                            height="13"
-                            rx="2"
-                            ry="2"
-                            strokeWidth="2"
-                          />
-                          <path
-                            d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"
-                            strokeWidth="2"
-                          />
-                        </svg>
-                        {t("module2.result.copy")}
-                      </>
-                    )}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <rect
+                        x="9"
+                        y="9"
+                        width="13"
+                        height="13"
+                        rx="2"
+                        ry="2"
+                        strokeWidth="2"
+                      />
+                      <path
+                        d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                    {t("module2.result.copy")}
                   </button>
                   <button className="btn-icon" onClick={handleClear}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -298,7 +314,7 @@ function Module2({ onBack }: Module2Props) {
                 </div>
               </div>
               <div className="result-content markdown-content">
-                <ReactMarkdown>{result}</ReactMarkdown>
+                <ReactMarkdown>{analysisResult}</ReactMarkdown>
               </div>
             </div>
           </div>

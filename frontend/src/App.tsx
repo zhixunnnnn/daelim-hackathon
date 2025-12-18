@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import Module2 from "./Module2";
+import ToastContainer from "./components/ToastContainer";
+import { useToast } from "./hooks/useToast";
 import "./App.css";
 
-interface AnalysisResult {
+interface CsvAnalysisResult {
   summary: string;
   insights: string[];
   topActions: string[];
@@ -16,15 +18,17 @@ interface AnalysisResult {
   };
 }
 
-type Module = "module1" | "module2";
+type ActivePage = "dashboard" | "textAnalysis";
 
 function App() {
   const { t, i18n } = useTranslation();
-  const [currentModule, setCurrentModule] = useState<Module>("module1");
-  const [file, setFile] = useState<File | null>(null);
+  const toast = useToast();
+  const [activePage, setActivePage] = useState<ActivePage>("dashboard");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [csvAnalysisResult, setCsvAnalysisResult] =
+    useState<CsvAnalysisResult | null>(null);
+  const [isCsvAnalyzing, setIsCsvAnalyzing] = useState(false);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -45,85 +49,101 @@ function App() {
 
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile && droppedFile.name.endsWith(".csv")) {
-      setFile(droppedFile);
+      setUploadedFile(droppedFile);
+      toast.success(t("success.fileUploaded"));
+    } else if (droppedFile) {
+      toast.error(t("errors.invalidFileFormat"));
     }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile);
+      if (selectedFile.name.endsWith(".csv")) {
+        setUploadedFile(selectedFile);
+        toast.success(t("success.fileUploaded"));
+      } else {
+        toast.error(t("errors.invalidFileFormat"));
+      }
     }
   };
 
   const handleAnalyze = async () => {
-    if (!file) return;
+    if (!uploadedFile) {
+      toast.error(t("errors.emptyFile"));
+      return;
+    }
 
-    setIsAnalyzing(true);
+    // Check file size (50MB limit)
+    const maxSize = 50 * 1024 * 1024;
+    if (uploadedFile.size > maxSize) {
+      toast.error(t("errors.fileTooLarge"));
+      return;
+    }
+
+    setIsCsvAnalyzing(true);
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", uploadedFile);
     formData.append("language", i18n.language);
 
     try {
-      console.log("📤 Sending request to backend...");
       const response = await fetch("http://localhost:5001/api/analyze-csv", {
         method: "POST",
         body: formData,
       });
 
-      console.log(
-        "📥 Response received:",
-        response.status,
-        response.statusText,
-      );
-
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("❌ Response not OK:", errorText);
-        throw new Error(`Failed to analyze CSV: ${response.status}`);
+        if (response.status >= 500) {
+          toast.error(t("errors.apiError"));
+        } else {
+          toast.error(t("errors.analysisError"));
+        }
+        return;
       }
 
       const data = await response.json();
-      console.log("📊 Data parsed:", data);
 
       if (data.success) {
-        console.log("✅ Success! Setting results...");
-        setResult({
+        setCsvAnalysisResult({
           summary: data.analysis,
           insights: [],
           topActions: [],
           dataPreview: data.data_preview,
           metadata: {
-            fileName: file.name,
+            fileName: uploadedFile.name,
             rows: data.total_rows,
             columns: data.columns,
           },
         });
-        console.log("✅ Results set successfully!");
+        toast.success(t("success.analysisComplete"));
       } else {
-        console.error("❌ Data.success is false");
-        throw new Error(data.error || "Analysis failed");
+        toast.error(data.error || t("errors.analysisError"));
       }
     } catch (error) {
-      console.error("❌ Error analyzing CSV:", error);
-      alert(
-        "Failed to analyze CSV. Error: " +
-          (error instanceof Error ? error.message : String(error)),
-      );
+      console.error("Error analyzing CSV:", error);
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        toast.error(t("errors.networkError"));
+      } else {
+        toast.error(t("errors.analysisError"));
+      }
     } finally {
-      setIsAnalyzing(false);
+      setIsCsvAnalyzing(false);
     }
   };
 
   const handleReset = () => {
-    setFile(null);
-    setResult(null);
+    setUploadedFile(null);
+    setCsvAnalysisResult(null);
   };
 
-  if (currentModule === "module2") {
+  if (activePage === "textAnalysis") {
     return (
       <div className="app">
+        <ToastContainer
+          toasts={toast.toasts}
+          onRemoveToast={toast.removeToast}
+        />
         <aside className="sidebar">
           <div className="logo">
             <div className="logo-icon">
@@ -145,7 +165,7 @@ function App() {
                 className="nav-item"
                 onClick={(e) => {
                   e.preventDefault();
-                  setCurrentModule("module1");
+                  setActivePage("dashboard");
                 }}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -207,7 +227,7 @@ function App() {
         </aside>
 
         <main className="main">
-          <Module2 onBack={() => setCurrentModule("module1")} />
+          <Module2 onBack={() => setActivePage("dashboard")} toast={toast} />
         </main>
       </div>
     );
@@ -215,6 +235,7 @@ function App() {
 
   return (
     <div className="app">
+      <ToastContainer toasts={toast.toasts} onRemoveToast={toast.removeToast} />
       <aside className="sidebar">
         <div className="logo">
           <div className="logo-icon">
@@ -245,7 +266,7 @@ function App() {
               className="nav-item"
               onClick={(e) => {
                 e.preventDefault();
-                setCurrentModule("module2");
+                setActivePage("textAnalysis");
               }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -317,10 +338,10 @@ function App() {
         </header>
 
         <div className="content">
-          {!result ? (
+          {!csvAnalysisResult ? (
             <div className="upload-container">
               <div
-                className={`dropzone ${isDragging ? "dragging" : ""} ${file ? "has-file" : ""}`}
+                className={`dropzone ${isDragging ? "dragging" : ""} ${uploadedFile ? "has-file" : ""}`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
@@ -333,7 +354,7 @@ function App() {
                   style={{ display: "none" }}
                 />
 
-                {!file ? (
+                {!uploadedFile ? (
                   <label htmlFor="file-input" className="dropzone-label">
                     <div className="upload-icon">
                       <svg
@@ -376,9 +397,10 @@ function App() {
                       </svg>
                     </div>
                     <div className="file-details">
-                      <div className="file-name">{file.name}</div>
+                      <div className="file-name">{uploadedFile.name}</div>
                       <div className="file-meta">
-                        {(file.size / 1024).toFixed(1)} {t("upload.fileSize")}
+                        {(uploadedFile.size / 1024).toFixed(1)}{" "}
+                        {t("upload.fileSize")}
                       </div>
                     </div>
                     <button
@@ -402,14 +424,14 @@ function App() {
                 )}
               </div>
 
-              {file && (
+              {uploadedFile && (
                 <div className="actions">
                   <button
                     className="btn-primary"
                     onClick={handleAnalyze}
-                    disabled={isAnalyzing}
+                    disabled={isCsvAnalyzing}
                   >
-                    {isAnalyzing ? (
+                    {isCsvAnalyzing ? (
                       <>
                         <div className="spinner"></div>
                         {t("buttons.analyzing")}
@@ -442,17 +464,19 @@ function App() {
                   <div className="meta-item">
                     <span className="meta-label">{t("results.file")}</span>
                     <span className="meta-value">
-                      {result.metadata.fileName}
+                      {csvAnalysisResult.metadata.fileName}
                     </span>
                   </div>
                   <div className="meta-item">
                     <span className="meta-label">{t("results.rows")}</span>
-                    <span className="meta-value">{result.metadata.rows}</span>
+                    <span className="meta-value">
+                      {csvAnalysisResult.metadata.rows}
+                    </span>
                   </div>
                   <div className="meta-item">
                     <span className="meta-label">{t("results.columns")}</span>
                     <span className="meta-value">
-                      {result.metadata.columns.length}
+                      {csvAnalysisResult.metadata.columns.length}
                     </span>
                   </div>
                 </div>
@@ -476,7 +500,7 @@ function App() {
               <div className="insight-card summary-card">
                 <div className="card-content">
                   <div className="ai-analysis markdown-content">
-                    <ReactMarkdown>{result.summary}</ReactMarkdown>
+                    <ReactMarkdown>{csvAnalysisResult.summary}</ReactMarkdown>
                   </div>
                 </div>
               </div>
@@ -492,13 +516,15 @@ function App() {
                   <table className="data-table">
                     <thead>
                       <tr>
-                        {Object.keys(result.dataPreview[0]).map((key) => (
-                          <th key={key}>{key}</th>
-                        ))}
+                        {Object.keys(csvAnalysisResult.dataPreview[0]).map(
+                          (key) => (
+                            <th key={key}>{key}</th>
+                          ),
+                        )}
                       </tr>
                     </thead>
                     <tbody>
-                      {result.dataPreview.map((row, idx) => (
+                      {csvAnalysisResult.dataPreview.map((row, idx) => (
                         <tr key={idx}>
                           {Object.values(row).map((value, cellIdx) => (
                             <td key={cellIdx}>{value}</td>
