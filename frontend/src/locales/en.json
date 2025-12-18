@@ -1,0 +1,61 @@
+{
+  "app": {
+    "name": "AstraSemi",
+    "tagline": "Operations Intelligence System"
+  },
+  "nav": {
+    "workspace": "Workspace",
+    "dashboard": "Dashboard",
+    "textAnalysis": "Text Analysis",
+    "imageRecognition": "Image Recognition",
+    "comingSoon": "Soon"
+  },
+  "status": {
+    "online": "System Online",
+    "analyzing": "Analyzing..."
+  },
+  "breadcrumb": {
+    "workspace": "Workspace",
+    "operationsOverview": "Operations Overview"
+  },
+  "header": {
+    "title": "Operations Overview Dashboard",
+    "subtitle": "AI-powered insights from operational data"
+  },
+  "upload": {
+    "title": "Upload CSV file",
+    "subtitle": "or drag and drop here",
+    "fileSize": "KB"
+  },
+  "buttons": {
+    "analyzeWithAI": "Analyze with AI",
+    "analyzing": "Analyzing...",
+    "newAnalysis": "New Analysis"
+  },
+  "results": {
+    "file": "File",
+    "rows": "Rows",
+    "columns": "Columns",
+    "summary": "Summary",
+    "keyInsights": "Key Insights",
+    "topActions": "Top 3 Actions",
+    "priority": "Priority",
+    "dataPreview": "Data Preview",
+    "showingRows": "Showing first 5 rows"
+  },
+  "mock": {
+    "summary": "This shipment manifest contains 15 semiconductor product deliveries scheduled across 12 global locations. The dataset tracks high-value components including microprocessors, memory chips, and FPGA units with delivery windows between December 15-24, 2025.",
+    "insights": [
+      "Three critical-priority shipments are currently delayed (SH-2025-003, SH-2025-007, SH-2025-012), representing potential revenue impact of $2.3M",
+      "Quality scores range from 95.8% to 99.7%, with shipment SH-2025-012 falling below the 96% threshold requiring immediate quality review",
+      "67% of shipments require temperature control, but only 60% of current logistics partners support this capability",
+      "Asia-Pacific region accounts for 53% of total shipment volume, with Shanghai and Taipei as highest-volume destinations",
+      "Average transit time is 5.2 days, with Munich and Sydney routes showing 15% longer delivery windows than target SLA"
+    ],
+    "actions": [
+      "Escalate three delayed critical shipments to logistics operations manager for immediate intervention and customer communication",
+      "Initiate quality investigation for SH-2025-012 (Power Module to Boston) - coordinate with QA team before shipment proceeds",
+      "Review temperature-controlled logistics capacity with procurement team to ensure compliance for upcoming Q1 2026 volume increase"
+    ]
+  }
+}

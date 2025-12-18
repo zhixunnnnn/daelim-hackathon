@@ -1,0 +1,16 @@
+Shipment_ID,Product_Type,Quantity,Destination,Status,Priority,Ship_Date,Expected_Delivery,Quality_Score,Temperature_Control
+SH-2025-001,Microprocessor,5000,Seoul,In Transit,High,2025-12-15,2025-12-20,98.5,Required
+SH-2025-002,Memory Chip,12000,Tokyo,Delivered,Medium,2025-12-10,2025-12-18,99.2,Required
+SH-2025-003,Power IC,8000,San Francisco,Delayed,Critical,2025-12-12,2025-12-19,97.8,Required
+SH-2025-004,Sensor Module,3000,Munich,In Transit,Low,2025-12-16,2025-12-22,99.5,Not Required
+SH-2025-005,LED Driver,15000,Shanghai,Ready to Ship,High,2025-12-17,2025-12-21,98.9,Not Required
+SH-2025-006,Microcontroller,6500,Austin,In Transit,Medium,2025-12-14,2025-12-20,99.1,Required
+SH-2025-007,FPGA,2000,Singapore,Delayed,Critical,2025-12-11,2025-12-18,96.5,Required
+SH-2025-008,Flash Memory,20000,Taipei,Delivered,High,2025-12-09,2025-12-17,99.7,Required
+SH-2025-009,Analog IC,4500,London,In Transit,Medium,2025-12-15,2025-12-21,98.3,Not Required
+SH-2025-010,RF Module,7000,Sydney,Ready to Ship,Low,2025-12-18,2025-12-23,99.0,Required
+SH-2025-011,Display Driver,11000,Hong Kong,In Transit,High,2025-12-13,2025-12-19,97.2,Required
+SH-2025-012,Power Module,3500,Boston,Delayed,Critical,2025-12-10,2025-12-17,95.8,Required
+SH-2025-013,Sensor Array,9000,Dubai,Delivered,Medium,2025-12-08,2025-12-16,99.4,Not Required
+SH-2025-014,MCU Development Kit,1200,Berlin,Ready to Ship,Low,2025-12-19,2025-12-24,98.7,Not Required
+SH-2025-015,Capacitive Touch IC,16000,Shenzhen,In Transit,High,2025-12-14,2025-12-20,99.3,Required
