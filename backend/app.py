@@ -231,6 +231,246 @@ Follow this format exactly. Use markdown formatting and keep it clean and well-s
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/api/interpret-text", methods=["POST"])
+def interpret_text():
+    """
+    Module 2: Interpret semiconductor work-related text messages
+    """
+    print("\n" + "=" * 60)
+    print("TEXT INTERPRETATION REQUEST RECEIVED")
+    print("=" * 60)
+
+    try:
+        data = request.get_json()
+        print(f"Request data: {data}")
+
+        if not data or "text" not in data:
+            print("ERROR: No text provided")
+            return jsonify({"error": "No text provided"}), 400
+
+        text = data["text"]
+        language = data.get("language", "en")
+
+        if not text.strip():
+            print("ERROR: Text is empty")
+            return jsonify({"error": "Text is empty"}), 400
+
+        print(f"Text to interpret: {text[:100]}...")
+        print(f"Language: {language}")
+
+        # Prepare prompt for AI based on language
+        if language == "ko":
+            prompt = f"""다음 반도체 작업 관련 텍스트 메시지를 해석하세요. 다음을 제공하세요:
+
+1. 명확하고 간단한 요약
+2. 초보자 친화적인 언어로 설명된 주요 포인트
+3. 유용한 경우 제안된 후속 조치
+
+텍스트:
+{text}
+
+마크다운 형식으로 깔끔하게 구조화된 응답을 제공하세요."""
+        else:
+            prompt = f"""Interpret the following semiconductor work-related text message. Provide:
+
+1. A clear and simple summary
+2. Key points explained in beginner-friendly language
+3. Suggested follow-up actions if useful
+
+Text:
+{text}
+
+Provide a clean, well-structured response in markdown format."""
+
+        # Call OpenAI API
+        print("Calling OpenAI API...")
+        if not client:
+            print("ERROR: OpenAI client not initialized!")
+            return jsonify({"error": "OpenAI API not configured"}), 500
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant that interprets semiconductor work messages, focusing on clear communication.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=1000,
+            temperature=0.5,
+        )
+        print("OpenAI API call successful!")
+
+        # Extract token usage and calculate cost
+        usage = response.usage
+        input_tokens = usage.prompt_tokens
+        output_tokens = usage.completion_tokens
+        total_tokens = usage.total_tokens
+
+        input_cost = input_tokens * INPUT_TOKEN_PRICE
+        output_cost = output_tokens * OUTPUT_TOKEN_PRICE
+        total_cost = input_cost + output_cost
+
+        print("\n" + "-" * 60)
+        print("TOKEN USAGE & COST")
+        print("-" * 60)
+        print(f"Input tokens:  {input_tokens:,}")
+        print(f"Output tokens: {output_tokens:,}")
+        print(f"Total tokens:  {total_tokens:,}")
+        print(f"\nInput cost:  ${input_cost:.6f}")
+        print(f"Output cost: ${output_cost:.6f}")
+        print(f"Total cost:  ${total_cost:.6f}")
+        print("-" * 60 + "\n")
+
+        interpretation = response.choices[0].message.content.strip()
+        print(f"Interpretation received: {len(interpretation)} characters")
+
+        result = {"success": True, "interpretation": interpretation}
+
+        print("SUCCESS! Sending response to frontend")
+        print("=" * 60 + "\n")
+        return jsonify(result)
+
+    except Exception as e:
+        print("\n" + "!" * 60)
+        print("EXCEPTION OCCURRED")
+        print("!" * 60)
+        print(f"Error type: {type(e).__name__}")
+        print(f"Error message: {str(e)}")
+        import traceback
+
+        print("Traceback:")
+        traceback.print_exc()
+        print("!" * 60 + "\n")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/convert-text", methods=["POST"])
+def convert_text():
+    """
+    Module 2: Convert text to professional email or management update
+    """
+    print("\n" + "=" * 60)
+    print("TEXT CONVERSION REQUEST RECEIVED")
+    print("=" * 60)
+
+    try:
+        data = request.get_json()
+        print(f"Request data: {data}")
+
+        if not data or "text" not in data or "type" not in data:
+            print("ERROR: Text and type required")
+            return jsonify({"error": "Text and type required"}), 400
+
+        text = data["text"]
+        convert_type = data["type"]
+        language = data.get("language", "en")
+
+        if convert_type not in ["email", "update"]:
+            print(f"ERROR: Invalid conversion type: {convert_type}")
+            return jsonify({"error": "Invalid conversion type"}), 400
+
+        print(f"Text to convert: {text[:100]}...")
+        print(f"Conversion type: {convert_type}")
+        print(f"Language: {language}")
+
+        # Prepare prompt for AI based on language and type
+        if language == "ko":
+            if convert_type == "email":
+                prompt = f"""다음 반도체 작업 관련 텍스트를 전문적인 이메일로 변환하세요.
+
+원본 텍스트:
+{text}
+
+전문적인 이메일 형식으로 작성하세요 (제목, 인사말, 본문, 맺음말 포함)."""
+            else:  # update
+                prompt = f"""다음 반도체 작업 관련 텍스트를 간결한 관리자 친화적인 업데이트로 변환하세요.
+
+원본 텍스트:
+{text}
+
+핵심 정보에 초점을 맞춘 간결하고 명확한 업데이트를 작성하세요."""
+        else:
+            if convert_type == "email":
+                prompt = f"""Convert the following semiconductor work-related text into a professional email.
+
+Original text:
+{text}
+
+Write it in professional email format (with subject, greeting, body, and closing)."""
+            else:  # update
+                prompt = f"""Convert the following semiconductor work-related text into a concise manager-friendly update.
+
+Original text:
+{text}
+
+Write a brief, clear update focused on key information."""
+
+        # Call OpenAI API
+        print("Calling OpenAI API...")
+        if not client:
+            print("ERROR: OpenAI client not initialized!")
+            return jsonify({"error": "OpenAI API not configured"}), 500
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant that converts semiconductor messages into professional formats.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=1000,
+            temperature=0.5,
+        )
+        print("OpenAI API call successful!")
+
+        # Extract token usage and calculate cost
+        usage = response.usage
+        input_tokens = usage.prompt_tokens
+        output_tokens = usage.completion_tokens
+        total_tokens = usage.total_tokens
+
+        input_cost = input_tokens * INPUT_TOKEN_PRICE
+        output_cost = output_tokens * OUTPUT_TOKEN_PRICE
+        total_cost = input_cost + output_cost
+
+        print("\n" + "-" * 60)
+        print("TOKEN USAGE & COST")
+        print("-" * 60)
+        print(f"Input tokens:  {input_tokens:,}")
+        print(f"Output tokens: {output_tokens:,}")
+        print(f"Total tokens:  {total_tokens:,}")
+        print(f"\nInput cost:  ${input_cost:.6f}")
+        print(f"Output cost: ${output_cost:.6f}")
+        print(f"Total cost:  ${total_cost:.6f}")
+        print("-" * 60 + "\n")
+
+        converted = response.choices[0].message.content.strip()
+        print(f"Converted text received: {len(converted)} characters")
+
+        result = {"success": True, "converted": converted}
+
+        print("SUCCESS! Sending response to frontend")
+        print("=" * 60 + "\n")
+        return jsonify(result)
+
+    except Exception as e:
+        print("\n" + "!" * 60)
+        print("EXCEPTION OCCURRED")
+        print("!" * 60)
+        print(f"Error type: {type(e).__name__}")
+        print(f"Error message: {str(e)}")
+        import traceback
+
+        print("Traceback:")
+        traceback.print_exc()
+        print("!" * 60 + "\n")
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("STARTING FLASK BACKEND SERVER")

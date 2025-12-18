@@ -10,13 +10,42 @@
     "imageRecognition": "이미지 인식",
     "comingSoon": "준비중"
   },
+  "module2": {
+    "title": "텍스트 해석 및 변환",
+    "subtitle": "반도체 운영을 위한 AI 기반 텍스트 분석",
+    "inputPlaceholder": "반도체 작업 관련 텍스트를 입력하세요...",
+    "interpret": {
+      "title": "텍스트 해석",
+      "button": "해석하기",
+      "analyzing": "해석 중...",
+      "description": "기술 메시지에서 명확한 설명과 인사이트를 얻으세요"
+    },
+    "convert": {
+      "title": "텍스트 변환",
+      "toEmail": "이메일로 변환",
+      "toUpdate": "업데이트로 변환",
+      "converting": "변환 중...",
+      "description": "메시지를 전문적인 형식으로 변환하세요"
+    },
+    "result": {
+      "title": "결과",
+      "copy": "클립보드에 복사",
+      "copied": "복사됨!",
+      "clear": "지우기"
+    },
+    "errors": {
+      "emptyText": "분석할 텍스트를 입력해주세요",
+      "analysisFailed": "분석에 실패했습니다. 다시 시도해주세요."
+    }
+  },
   "status": {
     "online": "시스템 정상",
     "analyzing": "분석 중..."
   },
   "breadcrumb": {
     "workspace": "작업공간",
-    "operationsOverview": "운영 현황"
+    "operationsOverview": "운영 현황",
+    "textAnalysis": "텍스트 분석"
   },
   "header": {
     "title": "운영 현황 대시보드",

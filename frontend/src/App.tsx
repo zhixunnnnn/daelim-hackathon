@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
+import Module2 from "./Module2";
 import "./App.css";
 
 interface AnalysisResult {
@@ -15,8 +16,11 @@ interface AnalysisResult {
   };
 }
 
+type Module = "module1" | "module2";
+
 function App() {
   const { t, i18n } = useTranslation();
+  const [currentModule, setCurrentModule] = useState<Module>("module1");
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -117,6 +121,98 @@ function App() {
     setResult(null);
   };
 
+  if (currentModule === "module2") {
+    return (
+      <div className="app">
+        <aside className="sidebar">
+          <div className="logo">
+            <div className="logo-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            <span className="logo-text">{t("app.name")}</span>
+          </div>
+
+          <nav className="nav">
+            <div className="nav-section">
+              <div className="nav-label">{t("nav.workspace")}</div>
+              <a
+                href="#"
+                className="nav-item"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentModule("module1");
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="3" y="3" width="7" height="7" strokeWidth="2" />
+                  <rect x="14" y="3" width="7" height="7" strokeWidth="2" />
+                  <rect x="14" y="14" width="7" height="7" strokeWidth="2" />
+                  <rect x="3" y="14" width="7" height="7" strokeWidth="2" />
+                </svg>
+                <span>{t("nav.dashboard")}</span>
+              </a>
+              <a href="#" className="nav-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"
+                    strokeWidth="2"
+                  />
+                </svg>
+                <span>{t("nav.textAnalysis")}</span>
+              </a>
+              <a href="#" className="nav-item disabled">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="2"
+                    strokeWidth="2"
+                  />
+                  <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                  <path d="M21 15l-5-5L5 21" strokeWidth="2" />
+                </svg>
+                <span>{t("nav.imageRecognition")}</span>
+                <span className="badge">{t("nav.comingSoon")}</span>
+              </a>
+            </div>
+          </nav>
+
+          <div className="sidebar-footer">
+            <div className="language-switcher">
+              <button
+                className={`lang-btn ${i18n.language === "en" ? "active" : ""}`}
+                onClick={() => changeLanguage("en")}
+              >
+                EN
+              </button>
+              <button
+                className={`lang-btn ${i18n.language === "ko" ? "active" : ""}`}
+                onClick={() => changeLanguage("ko")}
+              >
+                KO
+              </button>
+            </div>
+            <div className="status-badge">
+              <div className="status-dot"></div>
+              <span>{t("status.online")}</span>
+            </div>
+          </div>
+        </aside>
+
+        <main className="main">
+          <Module2 onBack={() => setCurrentModule("module1")} />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <aside className="sidebar">
@@ -144,7 +240,14 @@ function App() {
               </svg>
               <span>{t("nav.dashboard")}</span>
             </a>
-            <a href="#" className="nav-item disabled">
+            <a
+              href="#"
+              className="nav-item"
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrentModule("module2");
+              }}
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path
                   d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"
@@ -152,7 +255,6 @@ function App() {
                 />
               </svg>
               <span>{t("nav.textAnalysis")}</span>
-              <span className="badge">{t("nav.comingSoon")}</span>
             </a>
             <a href="#" className="nav-item disabled">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">

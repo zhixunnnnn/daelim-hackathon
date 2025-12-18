@@ -10,13 +10,42 @@
     "imageRecognition": "Image Recognition",
     "comingSoon": "Soon"
   },
+  "module2": {
+    "title": "Text Interpretation & Conversion",
+    "subtitle": "AI-powered text analysis for semiconductor operations",
+    "inputPlaceholder": "Enter your semiconductor work-related text here...",
+    "interpret": {
+      "title": "Interpret Text",
+      "button": "Interpret",
+      "analyzing": "Interpreting...",
+      "description": "Get clear explanations and insights from technical messages"
+    },
+    "convert": {
+      "title": "Convert Text",
+      "toEmail": "Convert to Email",
+      "toUpdate": "Convert to Update",
+      "converting": "Converting...",
+      "description": "Transform messages into professional formats"
+    },
+    "result": {
+      "title": "Result",
+      "copy": "Copy to Clipboard",
+      "copied": "Copied!",
+      "clear": "Clear"
+    },
+    "errors": {
+      "emptyText": "Please enter some text to analyze",
+      "analysisFailed": "Analysis failed. Please try again."
+    }
+  },
   "status": {
     "online": "System Online",
     "analyzing": "Analyzing..."
   },
   "breadcrumb": {
     "workspace": "Workspace",
-    "operationsOverview": "Operations Overview"
+    "operationsOverview": "Operations Overview",
+    "textAnalysis": "Text Analysis"
   },
   "header": {
     "title": "Operations Overview Dashboard",
