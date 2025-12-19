@@ -6,9 +6,18 @@
   "nav": {
     "workspace": "Workspace",
     "dashboard": "Dashboard",
+    "csvAnalysis": "CSV Analysis",
     "textAnalysis": "Text Analysis",
     "imageRecognition": "Image Recognition",
-    "comingSoon": "Soon"
+    "glossary": "Glossary",
+    "comingSoon": "Soon",
+    "tooltips": {
+      "dashboard": "View analytics and quick actions",
+      "csvAnalysis": "Upload and analyze CSV files",
+      "textAnalysis": "Interpret and convert text messages",
+      "imageAnalysis": "Analyze semiconductor images with AI",
+      "glossary": "Search semiconductor terminology"
+    }
   },
   "module2": {
     "title": "Text Interpretation & Conversion",
@@ -33,19 +42,94 @@
       "copied": "Copied!",
       "clear": "Clear"
     },
+    "emptyState": {
+      "title": "No Text Entered",
+      "description": "Enter some text above to start analyzing or converting"
+    },
     "errors": {
       "emptyText": "Please enter some text to analyze",
-      "analysisFailed": "Analysis failed. Please try again."
+      "analysisFailed": "Analysis failed. Please try again.",
+      "networkError": "Network error. Please check your connection.",
+      "apiError": "Server error. Please try again later.",
+      "interpretError": "Failed to interpret text. Please try again.",
+      "convertError": "Failed to convert text. Please try again."
+    },
+    "success": {
+      "interpretComplete": "Text interpreted successfully",
+      "convertComplete": "Text converted successfully",
+      "textCopied": "Copied to clipboard"
     }
   },
   "status": {
     "online": "System Online",
     "analyzing": "Analyzing..."
   },
+  "common": {
+    "loading": "Loading..."
+  },
   "breadcrumb": {
     "workspace": "Workspace",
     "operationsOverview": "Operations Overview",
-    "textAnalysis": "Text Analysis"
+    "csvAnalysis": "CSV Analysis",
+    "textAnalysis": "Text Analysis",
+    "imageRecognition": "Image Recognition",
+    "glossary": "Glossary"
+  },
+  "dashboard": {
+    "breadcrumb": "Dashboard",
+    "title": "Operations Intelligence",
+    "subtitle": "Real-time insights and AI-powered analytics for semiconductor operations",
+    "stats": {
+      "systemStatus": "System Status",
+      "analysesThisWeek": "Analyses This Week",
+      "avgProcessingTime": "Avg. Processing Time"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "csvAnalysis": {
+        "title": "CSV Analysis",
+        "description": "Upload and analyze operational data with AI insights"
+      },
+      "textAnalysis": {
+        "title": "Text Analysis",
+        "description": "Interpret and convert technical messages"
+      },
+      "imageAnalysis": {
+        "title": "Image Analysis",
+        "description": "Analyze equipment images with vision AI"
+      },
+      "glossary": {
+        "title": "Glossary",
+        "description": "Search semiconductor terms and concepts"
+      }
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "item1": {
+        "title": "Shipment manifest analyzed - 15 deliveries tracked",
+        "time": "2 minutes ago"
+      },
+      "item2": {
+        "title": "Text interpretation completed for production update",
+        "time": "15 minutes ago"
+      },
+      "item3": {
+        "title": "Quality score below threshold detected in SH-2025-012",
+        "time": "1 hour ago"
+      },
+      "item4": {
+        "title": "Equipment image analysis completed",
+        "time": "3 hours ago"
+      }
+    }
+  },
+  "module1": {
+    "title": "CSV Data Analysis",
+    "subtitle": "AI-powered insights from operational CSV files",
+    "analyze": {
+      "title": "Analyze with AI",
+      "description": "Get comprehensive analysis, key insights, and actionable recommendations"
+    }
   },
   "header": {
     "title": "Operations Overview Dashboard",
@@ -71,6 +155,78 @@
     "priority": "Priority",
     "dataPreview": "Data Preview",
     "showingRows": "Showing first 5 rows"
+  },
+  "module3": {
+    "title": "Image Recognition & Analysis",
+    "subtitle": "AI-powered image analysis for semiconductor operations",
+    "upload": {
+      "title": "Upload image file",
+      "subtitle": "or drag and drop here (max 20MB)"
+    },
+    "analyze": {
+      "title": "Analyze Image",
+      "button": "Analyze Image",
+      "analyzing": "Analyzing...",
+      "description": "Get detailed insights and analysis from semiconductor equipment images"
+    },
+    "result": {
+      "title": "Analysis Result",
+      "copy": "Copy to Clipboard",
+      "copied": "Copied to clipboard",
+      "clear": "Clear"
+    },
+    "emptyState": {
+      "title": "No Image Selected",
+      "description": "Upload an image above to start AI-powered analysis"
+    },
+    "success": {
+      "analyzed": "Image analyzed successfully"
+    },
+    "errors": {
+      "invalidType": "Only image files are allowed",
+      "tooLarge": "File size must be 20MB or less",
+      "noImage": "Please select an image",
+      "analyzeFailed": "Failed to analyze image. Please try again."
+    }
+  },
+  "module4": {
+    "title": "Semiconductor Glossary",
+    "subtitle": "Searchable dictionary of semiconductor terms and concepts",
+    "searchPlaceholder": "Search terms...",
+    "viewDetails": "View Details →",
+    "emptyState": {
+      "title": "No Terms Found",
+      "description": "Try adjusting your search or filter criteria"
+    },
+    "categories": {
+      "materials": "Materials",
+      "processes": "Processes",
+      "equipment": "Equipment",
+      "defects": "Defects",
+      "measurements": "Measurements",
+      "devices": "Devices"
+    },
+    "modal": {
+      "definition": "Definition",
+      "details": "Detailed Explanation",
+      "useCases": "Common Use Cases",
+      "aiExplain": "Explain More with AI",
+      "aiLoading": "Generating explanation...",
+      "aiExplanation": "AI Deep Dive",
+      "relatedTerms": "Related Terms"
+    }
+  },
+  "errors": {
+    "invalidFileFormat": "Invalid file format. Please upload a CSV file.",
+    "emptyFile": "Please select a file first.",
+    "fileTooLarge": "File is too large. Maximum size is 50MB.",
+    "analysisError": "Analysis failed. Please try again.",
+    "networkError": "Network error. Please check your connection.",
+    "apiError": "Server error. Please try again later."
+  },
+  "success": {
+    "fileUploaded": "File uploaded successfully",
+    "analysisComplete": "Analysis completed successfully"
   },
   "mock": {
     "summary": "This shipment manifest contains 15 semiconductor product deliveries scheduled across 12 global locations. The dataset tracks high-value components including microprocessors, memory chips, and FPGA units with delivery windows between December 15-24, 2025.",

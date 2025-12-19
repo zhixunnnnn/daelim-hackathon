@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
+import { FileText, Zap, Mail, Copy, X } from "lucide-react";
 import EmptyState from "./components/EmptyState";
+import { logAnalysis } from "./utils/analytics";
+import { errorHandler } from "./utils/errorHandler";
 
 interface Module2Props {
   onBack: () => void;
@@ -31,6 +34,7 @@ function Module2({ onBack, toast }: Module2Props) {
     setIsProcessing(true);
     setCurrentOperation("interpret");
     setAnalysisResult("");
+    const startTime = Date.now();
 
     try {
       const response = await fetch("http://localhost:5001/api/interpret-text", {
@@ -44,7 +48,15 @@ function Module2({ onBack, toast }: Module2Props) {
         }),
       });
 
+      const processingTime = (Date.now() - startTime) / 1000;
+
       if (!response.ok) {
+        logAnalysis(
+          "text",
+          "Failed to interpret text message",
+          processingTime,
+          "error"
+        );
         if (response.status >= 500) {
           toast.error(t("module2.errors.apiError"));
         } else {
@@ -55,14 +67,33 @@ function Module2({ onBack, toast }: Module2Props) {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (data.success && data.interpretation) {
         setAnalysisResult(data.interpretation);
+        logAnalysis(
+          "text",
+          "Text interpretation completed",
+          processingTime,
+          "success"
+        );
         toast.success(t("module2.success.interpretComplete"));
       } else {
+        logAnalysis(
+          "text",
+          "Failed to interpret text message",
+          processingTime,
+          "error"
+        );
         toast.error(data.error || t("module2.errors.interpretError"));
       }
     } catch (error) {
-      console.error("Error interpreting text:", error);
+      const processingTime = (Date.now() - startTime) / 1000;
+      logAnalysis(
+        "text",
+        "Failed to interpret text message",
+        processingTime,
+        "error"
+      );
+      errorHandler.handleNetworkError(error, { operation: "interpret" });
       if (error instanceof TypeError && error.message.includes("fetch")) {
         toast.error(t("module2.errors.networkError"));
       } else {
@@ -83,6 +114,7 @@ function Module2({ onBack, toast }: Module2Props) {
     setIsProcessing(true);
     setCurrentOperation(type);
     setAnalysisResult("");
+    const startTime = Date.now();
 
     try {
       const response = await fetch("http://localhost:5001/api/convert-text", {
@@ -97,7 +129,15 @@ function Module2({ onBack, toast }: Module2Props) {
         }),
       });
 
+      const processingTime = (Date.now() - startTime) / 1000;
+
       if (!response.ok) {
+        logAnalysis(
+          "text",
+          `Failed to convert text to ${type}`,
+          processingTime,
+          "error"
+        );
         if (response.status >= 500) {
           toast.error(t("module2.errors.apiError"));
         } else {
@@ -110,12 +150,31 @@ function Module2({ onBack, toast }: Module2Props) {
 
       if (data.success) {
         setAnalysisResult(data.converted);
+        logAnalysis(
+          "text",
+          `Converted text to ${type}`,
+          processingTime,
+          "success"
+        );
         toast.success(t("module2.success.convertComplete"));
       } else {
+        logAnalysis(
+          "text",
+          `Failed to convert text to ${type}`,
+          processingTime,
+          "error"
+        );
         toast.error(data.error || t("module2.errors.convertError"));
       }
     } catch (error) {
-      console.error("Error converting text:", error);
+      const processingTime = (Date.now() - startTime) / 1000;
+      logAnalysis(
+        "text",
+        `Failed to convert text to ${type}`,
+        processingTime,
+        "error"
+      );
+      errorHandler.handleNetworkError(error, { operation: "convert", type });
       if (error instanceof TypeError && error.message.includes("fetch")) {
         toast.error(t("module2.errors.networkError"));
       } else {
@@ -132,7 +191,7 @@ function Module2({ onBack, toast }: Module2Props) {
       await navigator.clipboard.writeText(analysisResult);
       toast.success(t("module2.success.textCopied"));
     } catch (error) {
-      console.error("Failed to copy:", error);
+      errorHandler.logError(error, { operation: "copy" });
       toast.error("Failed to copy to clipboard");
     }
   };
@@ -175,14 +234,7 @@ function Module2({ onBack, toast }: Module2Props) {
           <div className="actions-grid">
             <div className="action-card">
               <div className="action-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <FileText size={22} />
                 <h3>{t("module2.interpret.title")}</h3>
               </div>
               <p className="action-description">
@@ -203,14 +255,7 @@ function Module2({ onBack, toast }: Module2Props) {
                   </>
                 ) : (
                   <>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path
-                        d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <Zap size={16} />
                     {t("module2.interpret.button")}
                   </>
                 )}
@@ -219,13 +264,7 @@ function Module2({ onBack, toast }: Module2Props) {
 
             <div className="action-card">
               <div className="action-header">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path
-                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                    strokeWidth="2"
-                  />
-                  <path d="M22 6l-10 7L2 6" strokeWidth="2" />
-                </svg>
+                <Mail size={22} />
                 <h3>{t("module2.convert.title")}</h3>
               </div>
               <p className="action-description">
@@ -284,31 +323,11 @@ function Module2({ onBack, toast }: Module2Props) {
                 <h3>{t("module2.result.title")}</h3>
                 <div className="result-actions">
                   <button className="btn-icon" onClick={handleCopy}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <rect
-                        x="9"
-                        y="9"
-                        width="13"
-                        height="13"
-                        rx="2"
-                        ry="2"
-                        strokeWidth="2"
-                      />
-                      <path
-                        d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"
-                        strokeWidth="2"
-                      />
-                    </svg>
+                    <Copy size={14} />
                     {t("module2.result.copy")}
                   </button>
                   <button className="btn-icon" onClick={handleClear}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path
-                        d="M18 6L6 18M6 6l12 12"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <X size={14} />
                     {t("module2.result.clear")}
                   </button>
                 </div>

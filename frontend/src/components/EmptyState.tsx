@@ -1,7 +1,12 @@
 import { useTranslation } from "react-i18next";
 import "./EmptyState.css";
 
-function EmptyState() {
+interface EmptyStateProps {
+  title?: string;
+  description?: string;
+}
+
+function EmptyState({ title, description }: EmptyStateProps) {
   const { t } = useTranslation();
 
   return (
@@ -16,9 +21,11 @@ function EmptyState() {
           />
         </svg>
       </div>
-      <h3 className="empty-state-title">{t("module2.emptyState.title")}</h3>
+      <h3 className="empty-state-title">
+        {title || t("module2.emptyState.title")}
+      </h3>
       <p className="empty-state-description">
-        {t("module2.emptyState.description")}
+        {description || t("module2.emptyState.description")}
       </p>
     </div>
   );

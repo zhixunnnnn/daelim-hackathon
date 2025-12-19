@@ -1,0 +1,456 @@
+{
+  "categories": ["Materials", "Processes", "Equipment", "Defects", "Measurements", "Devices"],
+  "terms": [
+    {
+      "id": "wafer",
+      "term": "Wafer",
+      "category": "Materials",
+      "shortDefinition": "A thin slice of semiconductor material used as substrate for fabrication",
+      "detailedDefinition": "A wafer is a thin slice of semiconductor material, typically silicon, used in electronics for fabrication of integrated circuits and solar cells. Wafers serve as the substrate for microelectronic devices built in and upon them.",
+      "useCases": ["IC fabrication", "Solar cells", "MEMS devices", "Power electronics"],
+      "relatedTerms": ["silicon", "epitaxy", "die", "ingot"]
+    },
+    {
+      "id": "photolithography",
+      "term": "Photolithography",
+      "category": "Processes",
+      "shortDefinition": "Pattern transfer process using light to create circuit patterns on wafers",
+      "detailedDefinition": "Photolithography is a process used in microfabrication to pattern parts of a thin film or substrate. It uses light to transfer a geometric pattern from a photomask to a photosensitive chemical on the substrate.",
+      "useCases": ["Circuit patterning", "Feature definition", "Layer alignment", "Critical dimension control"],
+      "relatedTerms": ["photomask", "resist", "exposure", "euv"]
+    },
+    {
+      "id": "etching",
+      "term": "Etching",
+      "category": "Processes",
+      "shortDefinition": "Material removal process to create patterns and structures",
+      "detailedDefinition": "Etching is the process of using chemicals or plasma to remove layers from the wafer surface. It's critical for creating the intricate patterns and structures in semiconductor devices.",
+      "useCases": ["Pattern transfer", "Via formation", "Trench creation", "Surface cleaning"],
+      "relatedTerms": ["plasma", "reactive-ion-etching", "wet-etching", "selectivity"]
+    },
+    {
+      "id": "doping",
+      "term": "Doping",
+      "category": "Processes",
+      "shortDefinition": "Introduction of impurities to modify electrical properties",
+      "detailedDefinition": "Doping is the intentional introduction of impurities into an intrinsic semiconductor to modulate its electrical properties. This creates n-type or p-type semiconductors essential for device function.",
+      "useCases": ["P-N junction formation", "Threshold voltage adjustment", "Conductivity control", "Device optimization"],
+      "relatedTerms": ["ion-implantation", "diffusion", "p-type", "n-type"]
+    },
+    {
+      "id": "deposition",
+      "term": "Deposition",
+      "category": "Processes",
+      "shortDefinition": "Process of laying down thin films of material on wafer surface",
+      "detailedDefinition": "Deposition is any process that grows, coats, or otherwise transfers a material onto the wafer. Common techniques include CVD, PVD, ALD, and epitaxy.",
+      "useCases": ["Dielectric layer formation", "Metal interconnects", "Barrier layers", "Passivation"],
+      "relatedTerms": ["cvd", "pvd", "ald", "epitaxy"]
+    },
+    {
+      "id": "cmp",
+      "term": "CMP (Chemical Mechanical Planarization)",
+      "category": "Processes",
+      "shortDefinition": "Polishing process to create flat, smooth wafer surfaces",
+      "detailedDefinition": "CMP combines chemical and mechanical forces to planarize wafer surfaces, removing excess material and creating a smooth, flat surface critical for subsequent processing steps.",
+      "useCases": ["Surface planarization", "Oxide polishing", "Metal CMP", "STI formation"],
+      "relatedTerms": ["planarization", "slurry", "polishing-pad", "removal-rate"]
+    },
+    {
+      "id": "annealing",
+      "term": "Annealing",
+      "category": "Processes",
+      "shortDefinition": "Heat treatment to modify material properties and repair damage",
+      "detailedDefinition": "Annealing is a heat treatment process that alters the physical and chemical properties of materials, often used to reduce defects, activate dopants, or relieve stress in semiconductor manufacturing.",
+      "useCases": ["Dopant activation", "Defect reduction", "Stress relief", "Crystal restructuring"],
+      "relatedTerms": ["rtp", "furnace", "thermal-budget", "activation"]
+    },
+    {
+      "id": "silicon",
+      "term": "Silicon",
+      "category": "Materials",
+      "shortDefinition": "Most common semiconductor material, atomic number 14",
+      "detailedDefinition": "Silicon is a chemical element with symbol Si, the most widely used semiconductor material due to its abundance, stable oxide, and well-understood properties. It forms the basis of modern electronics.",
+      "useCases": ["Integrated circuits", "Solar cells", "MEMS", "Power devices"],
+      "relatedTerms": ["wafer", "polysilicon", "single-crystal", "ingot"]
+    },
+    {
+      "id": "mosfet",
+      "term": "MOSFET",
+      "category": "Devices",
+      "shortDefinition": "Metal-Oxide-Semiconductor Field-Effect Transistor",
+      "detailedDefinition": "A MOSFET is a type of transistor used for switching and amplifying electronic signals. It's the fundamental building block of modern digital circuits and microprocessors.",
+      "useCases": ["Logic gates", "Memory cells", "Power switching", "Amplification"],
+      "relatedTerms": ["gate", "threshold-voltage", "channel", "finfet"]
+    },
+    {
+      "id": "yield",
+      "term": "Yield",
+      "category": "Measurements",
+      "shortDefinition": "Percentage of functional dies or devices from manufacturing",
+      "detailedDefinition": "Yield represents the proportion of functional devices or dies produced during manufacturing. Higher yield indicates better process control and lower manufacturing costs.",
+      "useCases": ["Process optimization", "Cost analysis", "Quality metrics", "Fab performance"],
+      "relatedTerms": ["defect-density", "parametric-test", "bin-sort", "die"]
+    },
+    {
+      "id": "critical-dimension",
+      "term": "Critical Dimension (CD)",
+      "category": "Measurements",
+      "shortDefinition": "The smallest feature size that can be reliably manufactured",
+      "detailedDefinition": "Critical Dimension refers to the minimum feature size of a semiconductor device. CD control is crucial for device performance and yield, measured using SEM or optical techniques.",
+      "useCases": ["Process control", "Lithography optimization", "Metrology", "Yield improvement"],
+      "relatedTerms": ["linewidth", "pitch", "resolution", "overlay"]
+    },
+    {
+      "id": "clean-room",
+      "term": "Clean Room",
+      "category": "Equipment",
+      "shortDefinition": "Controlled environment with minimal particulate contamination",
+      "detailedDefinition": "A clean room is a controlled environment where particle concentration is regulated to specified limits. Semiconductor fabs use Class 1-10 clean rooms to prevent defects.",
+      "useCases": ["Wafer fabrication", "Assembly", "Metrology", "R&D"],
+      "relatedTerms": ["hepa-filter", "laminar-flow", "particle-count", "contamination"]
+    },
+    {
+      "id": "die",
+      "term": "Die",
+      "category": "Devices",
+      "shortDefinition": "Individual functional unit on a wafer before packaging",
+      "detailedDefinition": "A die is a small block of semiconducting material on which a functional circuit is fabricated. Multiple dies are manufactured on a single wafer and separated during dicing.",
+      "useCases": ["IC production", "Packaging", "Testing", "Assembly"],
+      "relatedTerms": ["wafer", "dicing", "package", "chip"]
+    },
+    {
+      "id": "mask",
+      "term": "Photomask/Mask",
+      "category": "Equipment",
+      "shortDefinition": "Template containing circuit pattern for lithography",
+      "detailedDefinition": "A photomask is a plate with transparent and opaque areas that define circuit patterns. Light shines through it during photolithography to transfer patterns onto wafers.",
+      "useCases": ["Pattern generation", "Lithography", "Reticle stepping", "Multi-layer alignment"],
+      "relatedTerms": ["reticle", "photolithography", "mask-alignment", "chrome"]
+    },
+    {
+      "id": "cvd",
+      "term": "CVD (Chemical Vapor Deposition)",
+      "category": "Processes",
+      "shortDefinition": "Process to deposit thin films from gaseous precursors",
+      "detailedDefinition": "CVD deposits thin films by chemical reactions of gaseous precursors on heated substrate surfaces. Widely used for oxide, nitride, and polysilicon deposition.",
+      "useCases": ["Oxide growth", "Nitride deposition", "Polysilicon formation", "Barrier layers"],
+      "relatedTerms": ["pecvd", "lpcvd", "mocvd", "deposition"]
+    },
+    {
+      "id": "plasma",
+      "term": "Plasma",
+      "category": "Processes",
+      "shortDefinition": "Ionized gas used in etching and deposition processes",
+      "detailedDefinition": "Plasma is an ionized gas containing ions, electrons, and neutral particles. In semiconductor manufacturing, it's used for etching and cleaning with high precision and selectivity.",
+      "useCases": ["Dry etching", "Plasma cleaning", "Surface treatment", "PECVD"],
+      "relatedTerms": ["rie", "etching", "pecvd", "sputtering"]
+    },
+    {
+      "id": "epitaxy",
+      "term": "Epitaxy",
+      "category": "Processes",
+      "shortDefinition": "Growth of crystalline layer matching substrate crystal structure",
+      "detailedDefinition": "Epitaxy is the deposition of a crystalline overlayer on a crystalline substrate, where the layer mimics the orientation of the substrate. Critical for high-performance devices.",
+      "useCases": ["Active layer formation", "Heterostructures", "Quantum wells", "Power devices"],
+      "relatedTerms": ["mbe", "mocvd", "silicon-epitaxy", "wafer"]
+    },
+    {
+      "id": "finfet",
+      "term": "FinFET",
+      "category": "Devices",
+      "shortDefinition": "3D transistor architecture with fin-shaped channel",
+      "detailedDefinition": "FinFET (Fin Field-Effect Transistor) is a 3D transistor design where the channel is formed as a thin vertical fin, providing better electrostatic control and reduced leakage.",
+      "useCases": ["Advanced logic nodes", "Low-power devices", "High-performance computing", "Mobile processors"],
+      "relatedTerms": ["mosfet", "gate-all-around", "nanowire", "transistor"]
+    },
+    {
+      "id": "euv",
+      "term": "EUV (Extreme Ultraviolet Lithography)",
+      "category": "Processes",
+      "shortDefinition": "Advanced lithography using 13.5nm wavelength light",
+      "detailedDefinition": "EUV lithography uses extremely short wavelength light (13.5nm) to print smaller features than conventional lithography, enabling advanced nodes below 7nm.",
+      "useCases": ["Sub-7nm nodes", "Advanced patterning", "High-resolution lithography", "Logic manufacturing"],
+      "relatedTerms": ["photolithography", "duv", "resolution", "critical-dimension"]
+    },
+    {
+      "id": "ion-implantation",
+      "term": "Ion Implantation",
+      "category": "Processes",
+      "shortDefinition": "Process of introducing dopants using accelerated ions",
+      "detailedDefinition": "Ion implantation bombards the wafer with high-energy ions to introduce dopants at precise depths and concentrations, offering superior control compared to diffusion.",
+      "useCases": ["Doping", "Threshold adjustment", "Well formation", "Source/drain engineering"],
+      "relatedTerms": ["doping", "implant-dose", "annealing", "channeling"]
+    },
+    {
+      "id": "metrology",
+      "term": "Metrology",
+      "category": "Measurements",
+      "shortDefinition": "Science of measurement in semiconductor manufacturing",
+      "detailedDefinition": "Metrology encompasses all measurement and characterization techniques used to monitor and control semiconductor manufacturing processes, ensuring quality and yield.",
+      "useCases": ["CD measurement", "Film thickness", "Overlay control", "Defect inspection"],
+      "relatedTerms": ["sem", "critical-dimension", "ellipsometry", "inspection"]
+    },
+    {
+      "id": "ald",
+      "term": "ALD (Atomic Layer Deposition)",
+      "category": "Processes",
+      "shortDefinition": "Layer-by-layer deposition with atomic precision",
+      "detailedDefinition": "ALD deposits films one atomic layer at a time through sequential self-limiting surface reactions, providing excellent thickness control and conformality.",
+      "useCases": ["High-k dielectrics", "Conformal coatings", "Barrier layers", "3D structures"],
+      "relatedTerms": ["cvd", "deposition", "high-k", "conformality"]
+    },
+    {
+      "id": "sem",
+      "term": "SEM (Scanning Electron Microscope)",
+      "category": "Equipment",
+      "shortDefinition": "High-resolution imaging tool using electron beam",
+      "detailedDefinition": "SEM uses a focused electron beam to scan surfaces and generate high-resolution images, essential for defect inspection and CD measurement in semiconductor manufacturing.",
+      "useCases": ["Defect inspection", "CD measurement", "Cross-section analysis", "Failure analysis"],
+      "relatedTerms": ["metrology", "inspection", "critical-dimension", "imaging"]
+    },
+    {
+      "id": "resist",
+      "term": "Photoresist",
+      "category": "Materials",
+      "shortDefinition": "Light-sensitive polymer used in lithography",
+      "detailedDefinition": "Photoresist is a light-sensitive material applied to wafers during lithography. It undergoes chemical changes when exposed to light, creating patterns after development.",
+      "useCases": ["Pattern definition", "Etch masking", "Implant masking", "Lithography"],
+      "relatedTerms": ["photolithography", "exposure", "developer", "positive-resist"]
+    },
+    {
+      "id": "overlay",
+      "term": "Overlay",
+      "category": "Measurements",
+      "shortDefinition": "Alignment accuracy between successive lithography layers",
+      "detailedDefinition": "Overlay measures the alignment accuracy between different patterned layers on a wafer. Poor overlay can cause device failure and is critical for multi-layer processes.",
+      "useCases": ["Layer alignment", "Process control", "Yield optimization", "Lithography quality"],
+      "relatedTerms": ["alignment", "photolithography", "metrology", "registration"]
+    },
+    {
+      "id": "threshold-voltage",
+      "term": "Threshold Voltage (Vth)",
+      "category": "Measurements",
+      "shortDefinition": "Minimum voltage required to create conducting channel in transistor",
+      "detailedDefinition": "Threshold voltage is the minimum gate-to-source voltage needed to create a conducting path between source and drain in a MOSFET. It's a critical parameter for device operation.",
+      "useCases": ["Transistor characterization", "Process monitoring", "Device design", "Power management"],
+      "relatedTerms": ["mosfet", "gate", "channel", "doping"]
+    },
+    {
+      "id": "defect",
+      "term": "Defect",
+      "category": "Defects",
+      "shortDefinition": "Physical or electrical imperfection that can affect device performance",
+      "detailedDefinition": "Defects are imperfections in materials or structures that can degrade device performance or cause failures. They can be particles, scratches, voids, or electrical anomalies.",
+      "useCases": ["Yield loss analysis", "Process improvement", "Inspection", "Root cause analysis"],
+      "relatedTerms": ["particle", "killer-defect", "inspection", "yield"]
+    },
+    {
+      "id": "package",
+      "term": "Package",
+      "category": "Devices",
+      "shortDefinition": "Protective housing for semiconductor die with electrical connections",
+      "detailedDefinition": "A package protects the die from environment and provides electrical connections to external circuits. Types include QFP, BGA, CSP, and advanced 2.5D/3D packages.",
+      "useCases": ["Die protection", "Heat dissipation", "Electrical interface", "Board mounting"],
+      "relatedTerms": ["die", "wire-bonding", "flip-chip", "substrate"]
+    },
+    {
+      "id": "patterning",
+      "term": "Patterning",
+      "category": "Processes",
+      "shortDefinition": "Creating geometric patterns on wafer for circuit formation",
+      "detailedDefinition": "Patterning creates the intricate geometric structures on wafers through lithography and etching. Modern chips require hundreds of patterning steps with nanometer precision.",
+      "useCases": ["Circuit definition", "Feature creation", "Multi-layer alignment", "Device isolation"],
+      "relatedTerms": ["photolithography", "etching", "mask", "resolution"]
+    },
+    {
+      "id": "oxide",
+      "term": "Silicon Dioxide (Oxide)",
+      "category": "Materials",
+      "shortDefinition": "Insulating layer used in semiconductor devices",
+      "detailedDefinition": "Silicon dioxide is an insulator grown or deposited on silicon. It serves as gate dielectric in transistors, insulation between metal layers, and protective coating.",
+      "useCases": ["Gate dielectric", "Interlayer dielectric", "Passivation", "Isolation"],
+      "relatedTerms": ["thermal-oxidation", "high-k", "dielectric", "silicon"]
+    },
+    {
+      "id": "metallization",
+      "term": "Metallization",
+      "category": "Processes",
+      "shortDefinition": "Formation of metal interconnects and contacts",
+      "detailedDefinition": "Metallization creates the metal wiring that connects transistors and other components. Modern chips use copper interconnects with multiple metal layers.",
+      "useCases": ["Interconnect formation", "Contact creation", "Power distribution", "Signal routing"],
+      "relatedTerms": ["copper", "aluminum", "damascene", "via"]
+    },
+    {
+      "id": "rie",
+      "term": "RIE (Reactive Ion Etching)",
+      "category": "Processes",
+      "shortDefinition": "Plasma-based etching process with anisotropic profiles",
+      "detailedDefinition": "RIE uses chemically reactive plasma to remove material. It combines physical ion bombardment and chemical reactions to achieve highly directional, anisotropic etching profiles.",
+      "useCases": ["Via etching", "Trench formation", "Pattern transfer", "Contact holes"],
+      "relatedTerms": ["plasma", "etching", "anisotropy", "selectivity"]
+    },
+    {
+      "id": "sputtering",
+      "term": "Sputtering",
+      "category": "Processes",
+      "shortDefinition": "Physical vapor deposition using ion bombardment",
+      "detailedDefinition": "Sputtering ejects material from a target by ion bombardment, then deposits it onto a substrate. It's a physical vapor deposition (PVD) technique for metal and dielectric films.",
+      "useCases": ["Metal deposition", "Barrier layers", "Seed layers", "Contact formation"],
+      "relatedTerms": ["pvd", "deposition", "target", "plasma"]
+    },
+    {
+      "id": "gate",
+      "term": "Gate",
+      "category": "Devices",
+      "shortDefinition": "Control electrode in transistors that modulates current flow",
+      "detailedDefinition": "The gate is the control terminal in FETs that creates or controls the conductive channel between source and drain by applying voltage. Gate materials include polysilicon and metals.",
+      "useCases": ["Transistor control", "Logic switching", "Signal modulation", "Memory cell control"],
+      "relatedTerms": ["mosfet", "gate-oxide", "threshold-voltage", "high-k"]
+    },
+    {
+      "id": "high-k",
+      "term": "High-k Dielectric",
+      "category": "Materials",
+      "shortDefinition": "Dielectric materials with high dielectric constant",
+      "detailedDefinition": "High-k dielectrics have higher dielectric constants than silicon dioxide, allowing thicker physical gates with same electrical thickness, reducing leakage current in advanced transistors.",
+      "useCases": ["Gate dielectric", "Capacitor dielectric", "Leakage reduction", "Advanced nodes"],
+      "relatedTerms": ["gate", "oxide", "ald", "hfO2"]
+    },
+    {
+      "id": "copper",
+      "term": "Copper Interconnect",
+      "category": "Materials",
+      "shortDefinition": "Metal used for wiring in modern ICs due to low resistivity",
+      "detailedDefinition": "Copper replaced aluminum as the primary interconnect metal in ICs due to its lower resistivity and better electromigration resistance, improving chip performance and reliability.",
+      "useCases": ["Interconnect wiring", "Via filling", "Power distribution", "High-speed signals"],
+      "relatedTerms": ["metallization", "damascene", "barrier-layer", "cmp"]
+    },
+    {
+      "id": "damascene",
+      "term": "Damascene Process",
+      "category": "Processes",
+      "shortDefinition": "Inlaid process for copper interconnect fabrication",
+      "detailedDefinition": "Damascene is a process where trenches and vias are etched into dielectric, filled with metal (typically copper), then polished back using CMP, leaving metal only in the recesses.",
+      "useCases": ["Copper interconnects", "Dual damascene", "Via formation", "Multi-level metallization"],
+      "relatedTerms": ["copper", "cmp", "metallization", "barrier-layer"]
+    },
+    {
+      "id": "inspection",
+      "term": "Defect Inspection",
+      "category": "Measurements",
+      "shortDefinition": "Detection and classification of wafer defects",
+      "detailedDefinition": "Inspection uses optical or e-beam tools to detect particles, scratches, and pattern defects on wafers. Critical for yield learning and process control.",
+      "useCases": ["Defect detection", "Yield improvement", "Process monitoring", "Root cause analysis"],
+      "relatedTerms": ["sem", "defect", "metrology", "particle"]
+    },
+    {
+      "id": "nand",
+      "term": "NAND Flash",
+      "category": "Devices",
+      "shortDefinition": "Non-volatile memory using floating-gate transistors",
+      "detailedDefinition": "NAND flash is a type of non-volatile memory that stores data in floating-gate transistor arrays. It's used in SSDs, USB drives, and mobile devices due to high density and low cost.",
+      "useCases": ["Solid-state drives", "Memory cards", "Mobile storage", "Data centers"],
+      "relatedTerms": ["floating-gate", "3d-nand", "memory", "program-erase"]
+    },
+    {
+      "id": "dram",
+      "term": "DRAM (Dynamic Random-Access Memory)",
+      "category": "Devices",
+      "shortDefinition": "Volatile memory storing data in capacitors",
+      "detailedDefinition": "DRAM stores each bit in a capacitor within an integrated circuit. It must be periodically refreshed to maintain data, but offers high density and speed for system memory.",
+      "useCases": ["System memory", "Cache memory", "Graphics memory", "Server memory"],
+      "relatedTerms": ["capacitor", "refresh", "memory", "trench-capacitor"]
+    },
+    {
+      "id": "sram",
+      "term": "SRAM (Static Random-Access Memory)",
+      "category": "Devices",
+      "shortDefinition": "Volatile memory using flip-flop circuits for fast access",
+      "detailedDefinition": "SRAM uses bistable latching circuitry to store each bit. It's faster and doesn't need refresh like DRAM, but takes more space per bit, typically used for cache memory.",
+      "useCases": ["CPU cache", "Register files", "FPGA memory", "High-speed buffers"],
+      "relatedTerms": ["cache", "memory", "6t-cell", "mosfet"]
+    },
+    {
+      "id": "power-device",
+      "term": "Power Semiconductor Device",
+      "category": "Devices",
+      "shortDefinition": "Devices designed to handle high voltages and currents",
+      "detailedDefinition": "Power devices are semiconductors designed to handle significant power levels in applications like motor drives, power supplies, and converters. Examples include IGBTs, power MOSFETs, and diodes.",
+      "useCases": ["Motor control", "Power conversion", "Renewable energy", "Automotive systems"],
+      "relatedTerms": ["igbt", "mosfet", "sic", "gan"]
+    },
+    {
+      "id": "soc",
+      "term": "SoC (System-on-Chip)",
+      "category": "Devices",
+      "shortDefinition": "Integrated circuit containing entire system on single chip",
+      "detailedDefinition": "SoC integrates all components of a computer or electronic system on a single chip, including CPU, GPU, memory, I/O controllers, and specialized processors.",
+      "useCases": ["Smartphones", "Tablets", "IoT devices", "Embedded systems"],
+      "relatedTerms": ["integration", "ip-core", "die", "package"]
+    },
+    {
+      "id": "tsv",
+      "term": "TSV (Through-Silicon Via)",
+      "category": "Processes",
+      "shortDefinition": "Vertical interconnect passing through silicon wafer",
+      "detailedDefinition": "TSV creates vertical electrical connections through silicon wafers, enabling 3D IC integration. It offers shorter interconnect paths and higher bandwidth than wire bonding.",
+      "useCases": ["3D integration", "Memory stacking", "High-bandwidth memory", "Advanced packaging"],
+      "relatedTerms": ["3d-ic", "package", "via", "stacking"]
+    },
+    {
+      "id": "gaas",
+      "term": "GaAs (Gallium Arsenide)",
+      "category": "Materials",
+      "shortDefinition": "Compound semiconductor with high electron mobility",
+      "detailedDefinition": "GaAs is a III-V compound semiconductor with higher electron mobility than silicon. Used in high-frequency, optoelectronic, and high-efficiency solar cell applications.",
+      "useCases": ["RF devices", "Solar cells", "LEDs", "Laser diodes"],
+      "relatedTerms": ["compound-semiconductor", "iii-v", "hemt", "epitaxy"]
+    },
+    {
+      "id": "gan",
+      "term": "GaN (Gallium Nitride)",
+      "category": "Materials",
+      "shortDefinition": "Wide bandgap semiconductor for power and RF applications",
+      "detailedDefinition": "GaN is a wide bandgap semiconductor enabling high-power, high-frequency devices with low loss. It's increasingly used in power electronics and RF applications.",
+      "useCases": ["Power converters", "5G infrastructure", "Fast chargers", "RF amplifiers"],
+      "relatedTerms": ["wide-bandgap", "power-device", "hemt", "sic"]
+    },
+    {
+      "id": "sic",
+      "term": "SiC (Silicon Carbide)",
+      "category": "Materials",
+      "shortDefinition": "Wide bandgap semiconductor for high-temperature power devices",
+      "detailedDefinition": "SiC is a wide bandgap material offering superior performance at high temperatures, voltages, and frequencies. Ideal for automotive, renewable energy, and industrial applications.",
+      "useCases": ["Electric vehicles", "Solar inverters", "Industrial motors", "High-voltage switches"],
+      "relatedTerms": ["wide-bandgap", "power-device", "gan", "mosfet"]
+    },
+    {
+      "id": "asic",
+      "term": "ASIC (Application-Specific IC)",
+      "category": "Devices",
+      "shortDefinition": "Custom integrated circuit for specific application",
+      "detailedDefinition": "ASIC is a chip customized for a particular use rather than general purpose. It offers optimized performance and power efficiency for specific tasks like crypto mining or AI acceleration.",
+      "useCases": ["Cryptocurrency mining", "AI accelerators", "Network processors", "Custom computing"],
+      "relatedTerms": ["soc", "ip-core", "design", "fabrication"]
+    },
+    {
+      "id": "node",
+      "term": "Process Node",
+      "category": "Measurements",
+      "shortDefinition": "Technology generation indicating transistor feature size",
+      "detailedDefinition": "Process node represents the technology generation of semiconductor manufacturing, historically related to smallest feature size but now more of a marketing term as technologies advance.",
+      "useCases": ["Technology classification", "Roadmap planning", "Density metrics", "Performance benchmarking"],
+      "relatedTerms": ["critical-dimension", "scaling", "moore's-law", "pitch"]
+    },
+    {
+      "id": "test",
+      "term": "Wafer Test",
+      "category": "Measurements",
+      "shortDefinition": "Electrical testing of dies on wafer before dicing",
+      "detailedDefinition": "Wafer test probes individual dies on wafers to verify functionality and measure electrical parameters before dicing and packaging, enabling early defect detection.",
+      "useCases": ["Yield measurement", "Parametric testing", "Functional test", "Bin sorting"],
+      "relatedTerms": ["probe-card", "yield", "parametric-test", "die"]
+    }
+  ]
+}
+

@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { ToastType } from "../components/Toast";
+import Toast from "../components/Toast";
+import type { ToastType } from "../components/Toast";
 
 interface ToastItem {
   id: string;
@@ -10,13 +11,10 @@ interface ToastItem {
 export function useToast() {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-  const showToast = useCallback(
-    (message: string, type: ToastType = "info") => {
-      const id = Date.now().toString() + Math.random().toString(36);
-      setToasts((prev) => [...prev, { id, message, type }]);
-    },
-    [],
-  );
+  const showToast = useCallback((message: string, type: ToastType = "info") => {
+    const id = Date.now().toString() + Math.random().toString(36);
+    setToasts((prev) => [...prev, { id, message, type }]);
+  }, []);
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
